@@ -1,0 +1,41 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+camera:
+  - name: Stream Camera
+    platform: mjpeg
+    mjpeg_url: http://10.0.0.111/
+
+sensor:
+  - name: sensor_cozinha_temperature
+    platform: mqtt
+    state_topic: "cozinha/temperatura"
+
+  - name: sensor_cozinha_umidade
+    platform: mqtt
+    state_topic: "cozinha/umidade"
+
+  - name: sensor_cozinha_gasfumaca
+    platform: mqtt
+    state_topic: "cozinha/gas_fumaca"
+
+  - name: sensor_entrada_movimento
+    platform: mqtt
+    state_topic: "entrada/movimento"
+
+binary_sensor:
+  - platform: mqtt
+    name: Sensor movimento entrada
+    state_topic: "entrada/movimento"
+    payload_on: "on"
+    payload_off: "off"
+    device_class: motion

@@ -1,0 +1,8 @@
+sensor.sensor_cozinha_umidade:
+  unit_of_measurement: '%'
+sensor.sensor_cozinha_gasfumaca:
+  unit_of_measurement: ppm
+sensor.sensor_cozinha_temperature:
+  unit_of_measurement: ºC
+sensor.sensor_entrada_movimento:
+  device_class: power
