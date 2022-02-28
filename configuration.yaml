@@ -10,8 +10,9 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
+# Custom
 camera:
-  - name: Stream Camera
+  - name: Camera entrada - Streaming
     platform: mjpeg
     mjpeg_url: http://10.0.0.111/
 
