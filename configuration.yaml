@@ -16,6 +16,7 @@ camera:
     platform: mjpeg
     mjpeg_url: http://10.0.0.111/
 
+# Sensores
 sensor:
   - name: sensor_cozinha_temperature
     platform: mqtt
