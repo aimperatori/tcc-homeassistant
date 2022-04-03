@@ -11,6 +11,12 @@ script: !include scripts.yaml
 scene: !include scenes.yaml
 
 # Custom
+
+homeassistant:
+  media_dirs:
+    media: /media
+    # recording: /mnt/recordings
+
 camera:
   - name: Camera entrada - Streaming
     platform: mjpeg
@@ -21,18 +27,22 @@ sensor:
   - name: sensor_cozinha_temperature
     platform: mqtt
     state_topic: "cozinha/temperatura"
+    qos: 1
 
   - name: sensor_cozinha_umidade
     platform: mqtt
     state_topic: "cozinha/umidade"
+    qos: 1
 
   - name: sensor_cozinha_gasfumaca
     platform: mqtt
     state_topic: "cozinha/gas_fumaca"
+    qos: 1
 
   - name: sensor_entrada_movimento
     platform: mqtt
     state_topic: "entrada/movimento"
+    qos: 1
 
 binary_sensor:
   - platform: mqtt
