@@ -1,95 +1,57 @@
-- id: '1634997150227'
-  alias: Teste Motion
-  description: ''
-  trigger:
-  - platform: mqtt
-    topic: motion
-    id: '1'
-    payload: 'ON'
-  condition: []
-  action:
-  - service: notify.notify
-    data:
-      message: Detectado movimento!!!
-      title: Alerta
-  mode: single
-- id: '1634998625266'
-  alias: TESTE2
-  description: ''
-  trigger: []
-  condition: []
-  action:
-  - service: notify.notify
-    data:
-      message: TEEESTE
-      title: teste
-  mode: single
-- id: '1635085500885'
-  alias: Zone Notification
-  description: ''
-  use_blueprint:
-    path: homeassistant/notify_leaving_zone.yaml
-    input:
-      person_entity: person.anderson
-      zone_entity: zone.home
-      notify_device: 5286f65ec45928078f0b01d174867b6f
-- id: '1635086190841'
-  alias: Tamires - Zone Notification
-  description: ''
-  use_blueprint:
-    path: homeassistant/notify_leaving_zone.yaml
-    input:
-      person_entity: person.tamires
-      zone_entity: zone.home
-      notify_device: 5286f65ec45928078f0b01d174867b6f
-- id: '1635086423989'
-  alias: CARREGA CELULAR
-  description: ''
-  trigger:
-  - type: plugged_in
-    platform: device
-    device_id: a01c8b3d2e4ef5c769bd3a5f92858bd0
-    entity_id: binary_sensor.sm_a325m_is_charging
-    domain: binary_sensor
-    id: '1'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 5
-      milliseconds: 0
-  condition: []
-  action:
-  - device_id: a01c8b3d2e4ef5c769bd3a5f92858bd0
-    domain: mobile_app
-    type: notify
-    title: CARREGA CARAI
-    message: TO CARREGANU
-  mode: single
-- id: '1635345762662'
-  alias: Tamires chegou em casa
-  description: ''
-  trigger:
-  - platform: device
-    device_id: a01c8b3d2e4ef5c769bd3a5f92858bd0
-    domain: device_tracker
-    entity_id: device_tracker.sm_a325m
-    type: enters
-    zone: zone.home
-  condition: []
-  action:
-  - service: notify.mobile_app_moto_g_5s_plus
-    data:
-      message: Bugrinha chegando
-  mode: single
-- id: '1645971282848'
+- id: "1645971282848"
   alias: Movimento detectado
   description: Envia notificação para os residentes quando for detectado movimento
   trigger:
-  - platform: mqtt
-    topic: entrada/movimento
-    payload: 'on'
+    - platform: mqtt
+      topic: entrada/movimento
+      payload: "on"
   condition: []
   action:
-  - service: script.notificacao_movimento
-    data: {}
+    - service: script.notificacao_movimento
+      data: {}
+  mode: single
+- trigger:
+    - platform: state
+      entity_id: binary_sensor.sensor_movimento_entrada
+      to: "on"
+  mode: queued
+  action:
+    - alias: Send notification on motion detected, if anybody isn't in home
+      choose:
+        - alias: Motion detected
+          conditions:
+            - condition: state
+              entity_id: group.family
+              state: home
+          sequence:
+            - service: script.notificacao_movimento
+  alias: Motificação quando estão em casa
+  id: d5e73da088e94f36a5fd88e34899a13c
+
+- id: "1650133608109"
+  alias: Movimento detectado pela câmera -  Início
+  description: ""
+  trigger:
+    - platform: webhook
+      webhook_id: motioneye-camera1-started
+  condition: []
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.camera1_motion_detected
+    - service: script.notificacao_movimento_pela_camera
+      data: {}
+  mode: single
+
+- id: "1650133636349"
+  alias: Movimento detectado pela câmera - Fim
+  description: ""
+  trigger:
+    - platform: webhook
+      webhook_id: motioneye-camera1-ended
+  condition: []
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.camera1_motion_detected
   mode: single

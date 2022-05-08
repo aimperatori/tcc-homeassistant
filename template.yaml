@@ -1,0 +1,24 @@
+# binary_sensor:
+#   - platform: mqtt
+#     name: "camera1_motion"
+#     # friendly_name: "Camera - Mouvement"
+#     device_class: motion
+#     value_template: "{{ is_state('input_boolean.camera1_motion_detected', 'on') }}"
+#     # payload_on: "on"
+#     # payload_off: "off"
+
+# sensor:
+#   # Keep track how many days have past since a date
+#   - name: "Not smoking"
+#     state: '{{ ( ( as_timestamp(now()) - as_timestamp(strptime("06.07.2018", "%d.%m.%Y")) ) / 86400 ) | round(default=0) }}'
+#     unit_of_measurement: "Days"
+
+# - trigger:
+#     - platform: template
+#       # webhook_id: my-super-secret-webhook-id
+#       value_template: "{{ is_state('input_boolean.camera1_motion_detected', 'on') }}"
+
+binary_sensor:
+  - name: "Motion"
+    state: "{{ is_state('input_boolean.camera1_motion_detected', 'on') }}"
+    device_class: motion

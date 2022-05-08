@@ -10,6 +10,8 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
+template: !include template.yaml
+
 # Custom
 
 homeassistant:
@@ -17,10 +19,16 @@ homeassistant:
     media: /media
     # recording: /mnt/recordings
 
+# Camera
 camera:
   - name: Camera entrada - Streaming
     platform: mjpeg
     mjpeg_url: http://10.0.0.111/
+
+input_boolean:
+  camera1_motion_detected:
+    name: Camera1 - Motion detected
+    icon: mdi:eye
 
 # Sensores
 sensor:
@@ -51,3 +59,11 @@ binary_sensor:
     payload_on: "on"
     payload_off: "off"
     device_class: motion
+    
+  - platform: template
+    sensors:
+      camera1_motion:
+        friendly_name: Camera motion
+        value_template: "{{ is_state('input_boolean.camera1_motion_detected', 'on') }}"
+        device_class: motion
+

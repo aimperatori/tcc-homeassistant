@@ -1,10 +1,1 @@
-- id: '1635087178009'
-  name: New Scene
-  entities:
-    automation.nova_automacao_2:
-      last_triggered: '2021-10-24T14:43:21.492570+00:00'
-      mode: single
-      current: 0
-      id: '1635086423989'
-      friendly_name: CARREGA CELULAR
-      state: 'on'
+[]

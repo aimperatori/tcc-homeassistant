@@ -1,0 +1,5 @@
+family:
+  name: Familia
+  entities:
+    - device_tracker.moto_g_60_s
+    - device_tracker.sm_a325m
