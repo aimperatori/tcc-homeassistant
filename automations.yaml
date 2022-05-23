@@ -1,57 +1,69 @@
-- id: "1645971282848"
+- id: '1645971282848'
   alias: Movimento detectado
   description: Envia notificação para os residentes quando for detectado movimento
   trigger:
-    - platform: mqtt
-      topic: entrada/movimento
-      payload: "on"
+  - platform: state
+    entity_id: binary_sensor.sensor_movimento_entrada
+    from: 'on'
   condition: []
   action:
-    - service: script.notificacao_movimento
-      data: {}
+  - service: script.notificacao_movimento
+    data: {}
   mode: single
 - trigger:
-    - platform: state
-      entity_id: binary_sensor.sensor_movimento_entrada
-      to: "on"
+  - platform: state
+    entity_id: binary_sensor.sensor_movimento_entrada
+    to: 'on'
   mode: queued
   action:
-    - alias: Send notification on motion detected, if anybody isn't in home
-      choose:
-        - alias: Motion detected
-          conditions:
-            - condition: state
-              entity_id: group.family
-              state: home
-          sequence:
-            - service: script.notificacao_movimento
+  - alias: Send notification on motion detected, if anybody isn't in home
+    choose:
+    - alias: Motion detected
+      conditions:
+      - condition: state
+        entity_id: group.family
+        state: home
+      sequence:
+      - service: script.notificacao_movimento
   alias: Motificação quando estão em casa
   id: d5e73da088e94f36a5fd88e34899a13c
-
-- id: "1650133608109"
+- id: '1650133608109'
   alias: Movimento detectado pela câmera -  Início
-  description: ""
+  description: ''
   trigger:
-    - platform: webhook
-      webhook_id: motioneye-camera1-started
+  - platform: webhook
+    webhook_id: motioneye-camera1-started
   condition: []
   action:
-    - service: input_boolean.turn_on
-      data:
-        entity_id: input_boolean.camera1_motion_detected
-    - service: script.notificacao_movimento_pela_camera
-      data: {}
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.camera1_motion_detected
+  - service: script.notificacao_movimento_pela_camera
+    data: {}
   mode: single
-
-- id: "1650133636349"
+- id: '1650133636349'
   alias: Movimento detectado pela câmera - Fim
-  description: ""
+  description: ''
   trigger:
-    - platform: webhook
-      webhook_id: motioneye-camera1-ended
+  - platform: webhook
+    webhook_id: motioneye-camera1-ended
   condition: []
   action:
-    - service: input_boolean.turn_off
-      data:
-        entity_id: input_boolean.camera1_motion_detected
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.camera1_motion_detected
+  mode: single
+- id: '1652721686782'
+  alias: Notificação fuga de gás ou fumaça
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: cozinha/gas_fumaca
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.sensor_cozinha_gasfumaca
+    above: '1500'
+  action:
+  - service: script.notificacao_fuga_de_gas_ou_fumaca
+    data: {}
   mode: single

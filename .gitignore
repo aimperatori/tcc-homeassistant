@@ -14,3 +14,10 @@
 ip_bans.yaml
 secrets.yaml
 known_devices.yaml
+
+# Custom Components
+!custom_components
+!custom_components/ha2firebase
+!custom_components/ha2firebase/__init__.py
+!custom_components/ha2firebase/README.md
+!custom_components/ha2firebase/manifest.json

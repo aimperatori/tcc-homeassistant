@@ -3,8 +3,8 @@ notificacao_movimento:
   sequence:
   - service: notify.mobile_app_moto_g_60_s
     data:
-      message: Movimento detectado na entrada da casa
-      title: Movimento detectado 2
+      message: Foi detectado movimento na entrada da casa
+      title: ATENÇÃO! Movimento detectado
       data:
         priority: high
         tag: motion-detected
@@ -15,8 +15,8 @@ notificacao_movimento:
         persistent: true
   - service: notify.mobile_app_sm_a325m
     data:
-      title: Movimento detectado
-      message: Movimento detectado na entrada da casa
+      title: ATENÇÃO! Movimento detectado
+      message: Foi detectado movimento na entrada da casa
       data:
         priority: high
         tag: motion-detected
@@ -26,7 +26,7 @@ notificacao_movimento:
         ledColor: red
         persistent: true
   mode: single
-  icon: mdi:alarm-light
+  icon: mdi:motion-sensor
 notificacao_movimento_pela_camera:
   alias: Notificação movimento pela câmera
   sequence:
@@ -55,4 +55,41 @@ notificacao_movimento_pela_camera:
         ledColor: red
         persistent: true
   mode: single
-  icon: mdi:alarm-light
+  icon: mdi:camera
+notificacao_fuga_de_gas_ou_fumaca:
+  alias: Notificação fuga de gás ou fumaça
+  sequence:
+  - service: notify.mobile_app_moto_g_60_s
+    data:
+      message: Gás ou fumaça foram detectados na sua residência
+      title: 'ATENÇÃO! Gás/Fumaça detectado '
+      data:
+        priority: high
+        tag: gassmoke-detected
+        sticky: 'false'
+        channel: Motion
+        importance: high
+        ledColor: red
+        persistent: true
+        actions:
+        - action: URI
+          title: Ligar para os bombeiros
+          uri: app://com.google.android.dialer
+  - service: notify.mobile_app_sm_a325m
+    data:
+      title: 'ATENÇÃO! Gás/Fumaça detectado '
+      message: Gás ou fumaça foram detectados na sua residência
+      data:
+        priority: high
+        tag: gassmoke-detected
+        sticky: 'false'
+        channel: Motion
+        importance: high
+        ledColor: red
+        persistent: true
+        actions:
+        - action: URI
+          title: Ligar para os bombeiros
+          uri: app://com.google.android.dialer
+  mode: single
+  icon: mdi:fire

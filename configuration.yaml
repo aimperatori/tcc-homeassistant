@@ -59,7 +59,7 @@ binary_sensor:
     payload_on: "on"
     payload_off: "off"
     device_class: motion
-    
+
   - platform: template
     sensors:
       camera1_motion:
@@ -67,3 +67,5 @@ binary_sensor:
         value_template: "{{ is_state('input_boolean.camera1_motion_detected', 'on') }}"
         device_class: motion
 
+# Custom Compoments
+ha2firebase:

@@ -1,0 +1,1 @@
+### Adicionar o arquivo json das permissões do firebase nesta pasta
