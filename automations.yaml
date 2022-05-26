@@ -10,23 +10,6 @@
   - service: script.notificacao_movimento
     data: {}
   mode: single
-- trigger:
-  - platform: state
-    entity_id: binary_sensor.sensor_movimento_entrada
-    to: 'on'
-  mode: queued
-  action:
-  - alias: Send notification on motion detected, if anybody isn't in home
-    choose:
-    - alias: Motion detected
-      conditions:
-      - condition: state
-        entity_id: group.family
-        state: home
-      sequence:
-      - service: script.notificacao_movimento
-  alias: Motificação quando estão em casa
-  id: d5e73da088e94f36a5fd88e34899a13c
 - id: '1650133608109'
   alias: Movimento detectado pela câmera -  Início
   description: ''
@@ -67,3 +50,25 @@
   - service: script.notificacao_fuga_de_gas_ou_fumaca
     data: {}
   mode: single
+- id: '1653309744634'
+  alias: Firebase - Envia os dados dos sensores para o Firebase
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /5
+  condition: []
+  action:
+  - service: ha2firebase.sendcollecteddata
+    data: {}
+  mode: restart
+- id: '1653309953708'
+  alias: Firebase - Envia as imagens das detecções de movimento para o Firebase
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /5
+  condition: []
+  action:
+  - service: ha2firebase.senddetectionimages
+    data: {}
+  mode: restart

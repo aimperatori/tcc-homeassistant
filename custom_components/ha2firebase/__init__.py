@@ -2,12 +2,8 @@
 from collections.abc import Callable
 from contextlib import suppress
 from dataclasses import dataclass
-import logging
-import math
-import queue
-import threading
-import time
 from typing import Any
+import re
 
 from os.path import exists
 from datetime import datetime
@@ -48,16 +44,19 @@ def getCozinhaTemperatura(conn):
             ORDER BY created DESC
     """
 
+    now = datetime.now()
+    date  = now.strftime('%Y-%m-%d')
+
     cur = conn.cursor()
     cur.execute(sql)
     rows = cur.fetchall()
 
-    ref = db.reference("collectedData/temperatura")
+    ref = db.reference("collectedData/temperatura/"+ date)
 
     for row in rows:
         json = {
             'value': row[0],
-            'created': row[1]
+            'created': re.findall("[0-2][0-4]:[0-5][0-9]:[0-5][0-9]", row[1])[0]
         }
         ref.push(json)
 
@@ -72,16 +71,19 @@ def getCozinhaUmidade(conn):
             ORDER BY created DESC
     """
 
+    now = datetime.now()
+    date  = now.strftime('%Y-%m-%d')
+
     cur = conn.cursor()
     cur.execute(sql)
     rows = cur.fetchall()
 
-    ref = db.reference("collectedData/umidade")
+    ref = db.reference("collectedData/umidade/"+ date)
 
     for row in rows:
         json = {
             'value': row[0],
-            'created': row[1]
+            'created': re.findall("[0-2][0-4]:[0-5][0-9]:[0-5][0-9]", row[1])[0]
         }
         ref.push(json)
 
@@ -92,20 +94,24 @@ def getCozinhaGasFumaca(conn):
             SELECT state, created, entity_id
             FROM "states"
             WHERE entity_id = "sensor.sensor_cozinha_gasfumaca"
-            AND created BETWEEN DATETIME(datetime(), '-30 second') AND DATETIME(datetime(), '+30 second')
+            AND created BETWEEN DATETIME(datetime(), '-5 minutes') AND DATETIME()
+            AND CAST(state AS INTEGER) >= "1000"
             ORDER BY created DESC
     """
+
+    now = datetime.now()
+    date  = now.strftime('%Y-%m-%d')
 
     cur = conn.cursor()
     cur.execute(sql)
     rows = cur.fetchall()
 
-    ref = db.reference("collectedData/gas_fumaca")
+    ref = db.reference("collectedData/gas_fumaca/"+ date)
 
     for row in rows:
         json = {
             'value': row[0],
-            'created': row[1]
+            'created': re.findall("[0-2][0-4]:[0-5][0-9]:[0-5][0-9]", row[1])[0]
         }
         ref.push(json)
 
@@ -116,21 +122,24 @@ def getMovimento(conn):
             SELECT state, created, entity_id, state_Id, old_state_id
             FROM "states"
             WHERE entity_id = "sensor.sensor_entrada_movimento"
-            AND created BETWEEN DATETIME(datetime(), '-30 second') AND DATETIME(datetime(), '+30 second')
+            AND created BETWEEN DATETIME(datetime(), '-5 minutes') AND DATETIME()
             AND state = 'on'
             ORDER BY created DESC
     """
+
+    now = datetime.now()
+    date  = now.strftime('%Y-%m-%d')
 
     cur = conn.cursor()
     cur.execute(sql)
     rows = cur.fetchall()
 
-    ref = db.reference("collectedData/movimento")
+    ref = db.reference("collectedData/movimento/"+ date)
 
     for row in rows:
         json = {
             'value': row[0],
-            'created': row[1]
+            'created': re.findall("[0-2][0-4]:[0-5][0-9]:[0-5][0-9]", row[1])[0]
         }
         ref.push(json)
 

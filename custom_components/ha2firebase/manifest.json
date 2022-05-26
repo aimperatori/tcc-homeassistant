@@ -1,9 +1,8 @@
 {
     "domain": "ha2firebase",
-    "name": "Home Assistant To Firebase",
-    "documentation": "https://www.home-assistant.io/integrations/ha2Firebase",
+    "name": "Home Assistant To Firebase",    
     "codeowners": ["@aimperatori"],
     "requirements": ["firebase_admin==5.2.0"],
-    "iot_class": "local_push",
+    "iot_class": "cloud_push",
     "version": "1.0.1"
 }
